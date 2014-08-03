@@ -1,88 +1,88 @@
 ######################################################
 # Modifications
-# Author:		    Ludovic Delafontaine
+# Author:		Ludovic Delafontaine
 # Date:         29.10.2013
 # Explications:	Convert in Unix format
 ######################################################
 # Modifications
-# Author:		    Ludovic Delafontaine
+# Author:		Ludovic Delafontaine
 # Date:         30.10.2013
 # Explications:	Begin of the modification to allow the script to run on Windows and Unix
 ######################################################
 # Modifications
-# Author:		    Ludovic Delafontaine
+# Author:		Ludovic Delafontaine
 # Date:         31.10.2013
 # Explications:	Begin of the modification to allow the script to run on Windows and Unix, need to test
 ######################################################
 # Modifications
-# Author:		    Ludovic Delafontaine
+# Author:		Ludovic Delafontaine
 # Date:         04.11.2013
 # Explications:	- Corrections of bugs
-#				        - Begin of tests on Windows
+#				- Begin of tests on Windows
 ######################################################
 # Modifications
-# Author:		    Ludovic Delafontaine
+# Author:		Ludovic Delafontaine
 # Date:         06.11.2013
 # Explications:	Control of the script and moved a commentary and a const
 ######################################################
 # Modifications
-# Author:		    Ludovic Delafontaine
+# Author:		Ludovic Delafontaine
 # Date:         14.11.2013
 # Explications:	- Test on a UNIX machine
-#				        - Need to delete the quotes around the truecrypt commands to avoid errors
-#				        - Huge tests and correction about rsync that doesn't really sync the two folders but just update the file list
-#				        - Need to try on a Windows plateform again to be sure
-#				        - Correction of a bad const name 
-#				        - Correction of the parameters
-#				        - Add the if at the end of the script		
+#				- Need to delete the quotes around the truecrypt commands to avoid errors
+#				- Huge tests and correction about rsync that doesn't really sync the two folders but just update the file list
+#				- Need to try on a Windows plateform again to be sure
+#				- Correction of a bad const name 
+#				- Correction of the parameters
+#				- Add the if at the end of the script		
 ######################################################
 # Modifications
-# Author:		    Ludovic Delafontaine
+# Author:		Ludovic Delafontaine
 # Date:         17.11.2013
 # Explications:	- Test on a Windows machine
-#				        - Big changes in the script, more dynamic
-#				        - Need to convert the Windows file path to unix file path for rsync
-#				        - Huge tests and correction about rsync that doesn't really sync the two folders but just update the file list
-#				        - Need to try on a Windows plateform again to be sure
-#				        - Correction of a bad const name 
-#				        - Correction of the parameters
-#				        - Add the if at the end of the script		
+#				- Big changes in the script, more dynamic
+#				- Need to convert the Windows file path to unix file path for rsync
+#				- Huge tests and correction about rsync that doesn't really sync the two folders but just update the file list
+#				- Need to try on a Windows plateform again to be sure
+#				- Correction of a bad const name 
+#				- Correction of the parameters
+#				- Add the if at the end of the script		
 ######################################################
 # Modifications
-# Author:		    Ludovic Delafontaine
+# Author:		Ludovic Delafontaine
 # Date:         18.11.2013
 # Explications:	- Test on a UNIX machine: works perfectly
-#				        - Add the Windows letter const for truecrypt
-#				        - Need to retest on a Windows machine :)	
+#				- Add the Windows letter const for truecrypt
+#				- Need to retest on a Windows machine :)	
 ######################################################
 # Modifications
-# Author:		    Ludovic Delafontaine
+# Author:		Ludovic Delafontaine
 # Date:         21.11.2013
 # Explications:	- Change a consts in a Windows's TrueCrypt command
-#				        - Change the if statement from *Windows* to */usr/bin*
+#				- Change the if statement from *Windows* to */usr/bin*
 ######################################################
 # Modifications
-# Author:		    Ludovic Delafontaine
+# Author:		Ludovic Delafontaine
 # Date:         16.01.2014
 # Explications:	- Change a const in the mount commands that didn't use the right mount_dest for the right OS
 ######################################################
 # Modifications
-# Author:		    Ludovic Delafontaine
+# Author:		Ludovic Delafontaine
 # Date:         20-21.07.2014
 # Explications:	- Much tested on Linux many times, works perfectly.
-#				        - Changed a bit the comments in the script for the github upload
-#				        - Changed a const name for comprehension
-#				        - Moved the TRUECRYPT_LOCATION outside of the if/else
-#				        - Added the set -u
-#				        - Correction of a bug with Windows and Truecrypt's file path (source: http://stackoverflow.com/questions/15994207/cygpath-doesnt-convert-windows-path-correctly)
+#				- Changed a bit the comments in the script for the github upload
+#				- Changed a const name for comprehension
+#				- Moved the TRUECRYPT_LOCATION outside of the if/else
+#				- Added the set -u
+#				- Correction of a bug with Windows and Truecrypt's file path (source: http://stackoverflow.com/questions/15994207/cygpath-doesnt-convert-windows-path-correctly)
 ######################################################
 # Modifications
-# Author:		    Ludovic Delafontaine
+# Author:		Ludovic Delafontaine
 # Date:         31.07.2014
 # Explications:	- Tested on Windows and few modifications
 ######################################################
 # Modifications
-# Author:		    Ludovic Delafontaine
+# Author:		Ludovic Delafontaine
 # Date:         03.07.2014
 # Explications:	- Final changes before uploading on GitHub
 ######################################################
