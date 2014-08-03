@@ -64,6 +64,7 @@ TRUECRYPT_FILE_PATH="/cygdrive/f/Backup.tc" # File path to the TrueCrypt contain
 MOUNT_POINT="/media/TrueCrypt" # TrueCrypt container's mount destination (Unix only)
 WINDOWS_MOUNT_POINT="Z:" # Windows's mount point's letter
 ```
+You may also change the programs' path. As I've tested on my computer, with my configuration, some path to programs may need to be changed (32bit systems VS 64bit for example).
 
 ##Execution
 Just open a terminal, and type 'backup2tc' or use the Backup.bat (for Windows' users only) to run the backup.
