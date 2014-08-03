@@ -36,4 +36,25 @@ On Windows, using Cygwin, the path should always be like this:
 /cygdrive/letter_of_a_parition/one\ folder/the_truecrypt_file.tc
 ```
 ###'include_to_backup.conf' and 'exclude_from_backup.conf'
+These two files are used to know what folders you would like to backup and which folders inside the folders included to the backup you want to ignore.
 
+####Example
+Let's say that you want to backup your personnal home folder (Linux example).
+In the file 'include_to_backup.conf', you should put the path to your home folder (and/or all the folders you want to backup):
+```bash
+/media/ludovic
+```
+But imagine that you don't want the 'Downloads' folder *inside* the /media/ludovic's folder. Just exclude it in the file 'exclude_from_backup.conf':
+```bash
+/media/ludovic/Downloads
+```
+Easy no ?
+
+###'backup2tc'
+This file defines where is the TrueCrypt's file, where should the TrueCrypt's container should be mounted and other few parameters. Just open it and change it for your needs. The most importants lines are these:
+```bash
+TRUECRYPT_FILE_PATH="/cygdrive/f/Backup.tc" # File path to the TrueCrypt container
+
+MOUNT_POINT="/media/TrueCrypt" # TrueCrypt container's mount destination (Unix only)
+WINDOWS_MOUNT_POINT="Z:" # Windows's mount point's letter
+```
