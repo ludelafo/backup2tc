@@ -1,6 +1,12 @@
 #backup2tc
 Backup all your personnal files, easily, using TrueCrypt
 
+#Details
+This script aims to help users making simple, secure and efficient backups using TrueCrypt and rsync. Using rsync, it will synchronise a source folder to a destination folder (inside a TrueCrypt container) coping/moving/deleting only the files that changed on the source since the last run. That means that the first time you run the script, it will copy all the source folder to the destination folder. Depending on the amount of files, it can take time, but then, depending on the changes of the source's folder, it will only copy the files that changed.
+
+#Disclaimer
+The script aims to help people doing their backups. I'm not responsable in case of lost data, faulty backups, files corruption and so on. You are responsable of your data, this script only tries to help you doing it, but without any warranty.
+
 #Requirements
 ##Linux
 * bash
@@ -58,3 +64,8 @@ TRUECRYPT_FILE_PATH="/cygdrive/f/Backup.tc" # File path to the TrueCrypt contain
 MOUNT_POINT="/media/TrueCrypt" # TrueCrypt container's mount destination (Unix only)
 WINDOWS_MOUNT_POINT="Z:" # Windows's mount point's letter
 ```
+
+##Execution
+Just open a terminal, and type 'backup2tc' or use the Backup.bat (for Windows' users only) to run the backup.
+
+The script will ask you the password of the TrueCrypt's container and mount it. When this is done, the user have to press 'Enter' to continue. The backup begins and when it's done, the script will lock the TrueCrypt's container and notify the user of the end.
