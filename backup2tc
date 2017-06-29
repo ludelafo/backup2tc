@@ -1,9 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ######################################################
-# Author:   Ludovic Delafontaine - https://github.com/Tweak-Man
-# Date:     18.10.2013
-# Propose:	Backup a source to a encrypted .tc container
-# Version:	0.3.2
+# Name:             backup2tc
+# Author:           Ludovic Delafontaine
+# Creation:         18.10.2013
+# Description:      Backup a source to a encrypted truecrypt container.
+# Documentation:    https://github.com/ludelafo/backup2tc
 ######################################################
 # In case of problems, stop the script
 set -e
@@ -12,64 +13,85 @@ set -u
 ######################################################
 # Consts - Change here if needed
 ######################################################
-TRUECRYPT_FILE_PATH="/cygdrive/f/Backup.tc" # File path to the TrueCrypt container
+TRUECRYPT_CONTAINER="/media/ludelafo/SSD-64GB/Backup.tc"
 
-MOUNT_POINT="/media/TrueCrypt" # TrueCrypt container's mount destination (Unix only)
+MOUNT_POINT="/media/TrueCrypt" # Unix format
 WINDOWS_MOUNT_POINT="Z:" # Windows's mount point's letter
 
-FOLDERS_TO_BACKUP="/usr/local/etc/include_to_backup.conf" # Sources
-FOLDERS_TO_EXCLUDE="/usr/local/etc/exclude_from_backup.conf" # Folders to exclude inside the sources folders
-DEST_FOLDER="Backups" # Destination
+FOLDERS_TO_INCLUDE="/usr/local/etc/include_to_backup.conf"
+FOLDERS_TO_EXCLUDE="/usr/local/etc/exclude_from_backup.conf"
+DESTINATION_FOLDER="Backups"
 
-# Change the path to TrueCrypt
-LINUX_TRUECRYPT_LOCATION="/usr/bin/truecrypt" # Linux - File path to Truecrypt
-WINDOWS_TRUECRYPT_LOCATION="/cygdrive/c/Program\ Files/TrueCrypt/TrueCrypt.exe" # Windows - File path to Truecrypt
-MAC_TRUECRYPT_LOCATION="/Applications/TrueCrypt.app" # Mac OS - File path to Truecrypt
+LINUX_TRUECRYPT_LOCATION="/usr/bin/truecrypt"
+WINDOWS_TRUECRYPT_LOCATION="/cygdrive/c/Program\ Files/TrueCrypt/TrueCrypt.exe" # Cygwin format
+MAC_TRUECRYPT_LOCATION="/Applications/TrueCrypt.app"
 
-LOG_FILE=$( date +"%d-%m-%Y-%H%M.txt" ) # Name of the log file
+logFile=$(date +"%d-%m-%Y-%H%M.txt") # Name of the log file
+
+######################################################
+# Functions
+######################################################
+backup() {
+
+    rsync \
+        --files-from="$FOLDERS_TO_INCLUDE" \
+        --exclude-from="$FOLDERS_TO_EXCLUDE" \
+        --log-file="$logFile" \
+        --archive \
+        --recursive \
+        --human-readable \
+        --delete \
+        --verbose \
+        --modify-window=1 \
+        / \
+        "$destination"
+}
+
+exitBackup() {
+
+    echo "Unmounting the TrueCrypt container..."
+
+    sync # Write the modified blocs on the disk
+    sleep 1 # Wait one sec to be sure
+
+    eval "$unmountTc" # Unmount the encrypted file
+
+    read -p "The backup is done ! Press <Enter> to exit."
+
+}
 
 ######################################################
 # Script
 ######################################################
-DEST_FOLDER=$MOUNT_POINT/$DEST_FOLDER
-LOG_FILE=$DEST_FOLDER/$LOG_FILE
-
-# Change the parameters if the OS is Windows or Unix based
-case "$OSTYPE" in
-	'linux-gnu' | 'darwin')
-		[[ "$OSTYPE" == 'linux-gnu' ]] && TRUECRYPT_LOCATION=$LINUX_TRUECRYPT_LOCATION || TRUECRYPT_LOCATION=$MAC_TRUECRYPT_LOCATION
-		MOUNT_TC_TO_DESTINATION="$TRUECRYPT_LOCATION $TRUECRYPT_FILE_PATH --mount $MOUNT_POINT"
-		DISMOUNT_TC="$TRUECRYPT_LOCATION --dismount $MOUNT_POINT"
-		mkdir -p $MOUNT_POINT # Create the mount point folder if doesn't exist
-		;;
-	'cygwin')
-		TRUECRYPT_LOCATION=$WINDOWS_TRUECRYPT_LOCATION
-		MOUNT_TC_TO_DESTINATION="$TRUECRYPT_LOCATION /volume \"$(cygpath -w $TRUECRYPT_FILE_PATH)\" /letter $WINDOWS_MOUNT_POINT /quit"
-		DISMOUNT_TC="$TRUECRYPT_LOCATION /dismount $WINDOWS_MOUNT_POINT /quit"
-		;;
-esac
-
-# Lock the TrueCrypt container
-exitBackup() {
-  echo -e "\nUnmounting the TrueCrypt container... "
-
-  sync # Write the modified blocs on the disk
-  sleep 1 # Wait one sec to be sure
-  
-  eval $DISMOUNT_TC # Unmount the encrypted file
-
-  echo "The backup is done ! Hit <Enter> to exit."
-  read
-  
-} # end exitBackup
-
 trap exitBackup EXIT # In case of problems or if the script ends, lock the encrypted file and exit
 
-echo "Hit <Enter> when $TRUECRYPT_FILE_PATH is mounted on $MOUNT_POINT..."
-eval $MOUNT_TC_TO_DESTINATION
-read # Wait for the user
+destination="$MOUNT_POINT/$DESTINATION_FOLDER"
+logFile="$destination/$logFile"
 
-mkdir -p $DEST_FOLDER # Created the destination folder if doesn't exist
+# Change the parameters if the OS is Windows or Unix based
+if [[ "$OSTYPE" = 'linux-gnu' || "$OSTYPE" = 'darwin' ]]; then
 
-echo "Starting backup to $DEST_FOLDER"
-eval rsync --files-from="$FOLDERS_TO_BACKUP" --exclude-from="$FOLDERS_TO_EXCLUDE" --archive --recursive --human-readable --delete --verbose --log-file="$LOG_FILE" --modify-window=1 / "$DEST_FOLDER"
+    if [[ "$OSTYPE" = 'linux-gnu' ]]; then
+        truecryptLocation="$LINUX_TRUECRYPT_LOCATION"
+    elif [[ "$OSTYPE" = 'darwin' ]]; then
+        truecryptLocation="$MAC_TRUECRYPT_LOCATION"
+    fi
+
+    mountTc="$truecryptLocation $TRUECRYPT_CONTAINER --mount $MOUNT_POINT"
+    unmountTc="$truecryptLocation --dismount $MOUNT_POINT"
+    mkdir --parent "$MOUNT_POINT"
+
+elif [[ "$OSTYPE" = 'cygwin' ]]; then
+    truecryptLocation="$WINDOWS_TRUECRYPT_LOCATION"
+    mountTc="$truecryptLocation /volume \"$(cygpath -w $TRUECRYPT_CONTAINER)\" /letter $WINDOWS_MOUNT_POINT /quit"
+    unmountTc="$truecryptLocation /dismount $WINDOWS_MOUNT_POINT /quit"
+fi
+
+eval "$mountTc"
+
+read -p "Hit <Enter> when $TRUECRYPT_CONTAINER is mounted on $MOUNT_POINT..."
+
+mkdir --parent "$destination" # Create the destination folder if doesn't exist
+
+echo "Starting backup to $destination..."
+backup
